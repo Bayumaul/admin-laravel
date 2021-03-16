@@ -14,7 +14,14 @@ class PegawaiController extends Controller
      */
     public function index()
     {
-        return view('pegawai.datapegawai');
+        $dtPegawai = Pegawai::paginate(4);
+        return view('pegawai.datapegawai',compact('dtPegawai'));
+    }
+
+    public function cetakPegawai()
+    {
+        $dtcetakPegawai = Pegawai::all();
+        return view('pegawai.cetakpegawai',compact('dtcetakPegawai'));
     }
 
     /**
@@ -35,14 +42,14 @@ class PegawaiController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        //dd($request->all());
         Pegawai::create([
             'nama' => $request -> nama,
             'alamat' => $request -> alamat,
-            'tgllhr' => $request -> tgllahir,
+            'tgllhr' => $request -> tgllhr,
         ]);
 
-        return redirect('datapegawai');
+        return redirect('datapegawai')->with('toast_success', 'Data Berhasil Disimpan!');
     }
 
     /**
@@ -64,7 +71,9 @@ class PegawaiController extends Controller
      */
     public function edit($id)
     {
-        //
+        $peg = Pegawai::findorfail($id);
+
+        return view('pegawai.editpegawai',compact('peg'));
     }
 
     /**
@@ -76,7 +85,9 @@ class PegawaiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $peg = Pegawai::findorfail($id);
+        $peg->update($request->all());
+        return redirect('datapegawai')->with('toast_success', 'Data Berhasil Update!');
     }
 
     /**
@@ -87,6 +98,8 @@ class PegawaiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $peg = Pegawai::findorfail($id);
+        $peg -> delete();
+        return back()->with('toast_success', 'Data Berhasil Dihapus!');
     }
 }

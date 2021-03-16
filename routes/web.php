@@ -28,8 +28,14 @@ Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
 
 Route::get('/datapegawai', 'App\Http\Controllers\PegawaiController@index')->name('datapegawai');
 Route::get('/createpegawai', 'App\Http\Controllers\PegawaiController@create')->name('createpegawai');
-	Route::post('/simpanpegawai', 'App\Http\Controllers\PegawaiController@store')->name('simpanpegawai');
+Route::post('/simpanpegawai', 'App\Http\Controllers\PegawaiController@store')->name('simpanpegawai');
+Route::get('/editpegawai/{id}', 'App\Http\Controllers\PegawaiController@edit')->name('editpegawai');
+Route::post('/updatepegawai/{id}', 'App\Http\Controllers\PegawaiController@update')->name('updatepegawai');
+Route::get('/deletepegawai/{id}', 'App\Http\Controllers\PegawaiController@destroy')->name('deletepegawai');
+Route::get('/cetakpegawai', 'App\Http\Controllers\PegawaiController@cetakPegawai')->name('cetakpegawai');
 
+
+//auth
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
